@@ -142,7 +142,6 @@ body {
   padding: 28px;
 }
 
-/* ====== Label ====== */
 .field-label {
   width: 520px;
   max-width: 70vw;
@@ -152,7 +151,6 @@ body {
   letter-spacing: 0.2px;
 }
 
-/* ====== Input ====== */
 .field-input {
   width: 520px;
   max-width: 70vw;
@@ -176,12 +174,10 @@ body {
     box-shadow 180ms ease-in;
 }
 
-/* placeholder visible SIN focus (imagen 1) */
 .field-input::placeholder {
   color: rgba(185, 212, 230, 0.35);
 }
 
-/* En focus: se quita el texto del placeholder + se resalta contorno (imagen 2) */
 .field-input:focus {
   border-color: rgba(0, 255, 255, 0.95);
   box-shadow:
@@ -190,12 +186,10 @@ body {
     0 0 40px rgba(0, 255, 255, 0.16);
 }
 
-/* Ocultar placeholder al hacer focus */
 .field-input:focus::placeholder {
   color: transparent;
 }
 
-/* ====== Botón ====== */
 .btn {
   width: 520px;
   max-width: 70vw;
@@ -232,7 +226,7 @@ body {
   filter: brightness(0.98);
 }
 
-/* Ajuste para pantallas pequeñas */
+/* Pestania responsiva */
 @media (max-width: 520px) {
   .login-card {
     height: 310px;
