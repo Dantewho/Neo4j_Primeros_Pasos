@@ -35,65 +35,44 @@ body {
     ),
     linear-gradient(180deg, #000000 0%, #03051a 55%, #04002a 100%);
 }
-/*borde neón*/
+
+/* Necesario para animar el ángulo */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
 .login-card {
   width: min(760px, 92vw);
-  height: 320px;
+  height: 380px;
   border-radius: 14px;
   position: relative;
-  border: 2px solid rgba(0, 255, 255, 0.75);
-  background: rgba(10, 16, 28, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-
-  box-shadow:
-    0 0 0 1px rgba(0, 255, 255, 0.1) inset,
-    0 0 26px rgba(0, 255, 255, 0.16),
-    0 20px 70px rgba(0, 0, 0, 0.55);
+  border: none;
 }
-.login-card::after {
+
+/* Borde animado */
+.login-card::before {
   content: "";
   position: absolute;
-  inset: -10px;
-  border-radius: 18px;
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(0, 255, 255, 0.1),
-    transparent 55%
-  );
-  filter: blur(12px);
-  z-index: -1;
-}
-
-/* 
-    ANIMACION DEL INPUT AL SER SELECIONADO
-*/
-.login-card:focus-within {
-  border-color: transparent;
-}
-
-.login-card:focus-within::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
+  inset: 0;
   border-radius: 14px;
-  padding: 2px;
+  padding: 2px; /* grosor del borde */
 
-  /* borde gradiente tipo arcoíris */
-  background: linear-gradient(
-    90deg,
-    #00f0ff,
-    #6b5bff,
-    #ff4fd8,
-    #ff4040,
-    #ffd000,
-    #2dff5a,
-    #00f0ff
+  background: conic-gradient(
+    from var(--angle),
+    red,
+    orange,
+    yellow,
+    lime,
+    cyan,
+    blue,
+    violet,
+    red
   );
-  background-size: 300% 100%;
-  animation: borderShift 2.6s linear infinite;
 
-  /* truco para que sea "solo borde" */
+  animation: spinColors 4s linear infinite;
+
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -103,12 +82,51 @@ body {
   z-index: 0;
 }
 
-@keyframes borderShift {
-  0% {
-    background-position: 0% 50%;
+/* Fondo real separado */
+.login-card .card-content {
+  position: relative;
+  height: 100%;
+  border-radius: 12px; /* un poco menor que el padre */
+  background: rgba(10, 16, 28, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    0 20px 70px rgba(0, 0, 0, 0.55);
+
+  z-index: 1;
+}
+
+/* Glow externo opcional */
+.login-card::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 18px;
+  background: conic-gradient(
+    from var(--angle),
+    red,
+    orange,
+    yellow,
+    lime,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+  filter: blur(20px);
+  opacity: 0.35;
+  animation: spinColors 4s linear infinite;
+  z-index: -1;
+}
+
+@keyframes spinColors {
+  from {
+    --angle: 360deg;
   }
-  100% {
-    background-position: 100% 50%;
+  to {
+    --angle: 0deg;
   }
 }
 
@@ -153,6 +171,9 @@ body {
   box-shadow:
     0 0 0 1px rgba(0, 255, 255, 0.1) inset,
     0 10px 30px rgba(0, 0, 0, 0.35);
+  transition:
+    border-color 180ms ease-in-out,
+    box-shadow 180ms ease-in;
 }
 
 /* placeholder visible SIN focus (imagen 1) */
