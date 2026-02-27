@@ -1,114 +1,140 @@
-* { box-sizing: border-box; }
-html, body { height: 100%; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
 
-body{
-  margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color: rgba(230,245,255,.9);
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Arial,
+    sans-serif;
+  color: rgba(230, 245, 255, 0.9);
   background:
-    radial-gradient(900px 420px at 55% 55%, rgba(65, 0, 255, 0.14), transparent 65%),
-    radial-gradient(700px 380px at 40% 65%, rgba(0, 255, 240, 0.10), transparent 60%),
+    radial-gradient(
+      900px 420px at 55% 55%,
+      rgba(65, 0, 255, 0.14),
+      transparent 65%
+    ),
+    radial-gradient(
+      700px 380px at 40% 65%,
+      rgba(0, 255, 240, 0.1),
+      transparent 60%
+    ),
     linear-gradient(180deg, #000000 0%, #03051a 55%, #04002a 100%);
 }
 
-.topbar{
-  padding: 18px 18px 0 18px;
+.topbar {
+  padding: 18px 0 0 0;
 }
 
-.topbar-inner{
+.topbar-inner {
   height: 34px;
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
 }
 
-.welcome{
+.welcome {
+  padding: 0 16px;
   font-size: 14px;
-  letter-spacing:.2px;
-  color: rgba(200,235,255,.9);
-  text-shadow: 0 0 14px rgba(0,255,255,.15);
+  letter-spacing: 0.2px;
+  color: rgba(200, 235, 255, 0.9);
+  text-shadow: 0 0 14px rgba(0, 255, 255, 0.15);
 }
 
-.rainbow-line{
+.rainbow-line {
   height: 2px;
   width: 100%;
   margin-top: 10px;
   background: linear-gradient(90deg, #00f0ff, #6b5bff, #ff4fd8, #ff4040);
-  opacity: .9;
-  box-shadow: 0 0 18px rgba(0,255,255,.15);
+  opacity: 0.9;
+  box-shadow: 0 0 18px rgba(0, 255, 255, 0.15);
 }
 
-.page{
+.page {
   min-height: calc(100vh - 70px);
-  display:grid;
-  place-items:center;
+  display: grid;
+  place-items: center;
   padding: 24px 16px 60px;
 }
 
-.friends-card{
+.friends-card {
   width: 320px;
   border-radius: 10px;
   position: relative;
 
-  border: 2px solid rgba(0, 210, 255, .85);
+  border: 2px solid rgba(0, 210, 255, 0.85);
   background: rgba(10, 16, 28, 0.35);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 
   box-shadow:
-    0 0 0 1px rgba(0,255,255,.08) inset,
-    0 0 26px rgba(0,255,255,.12),
-    0 18px 60px rgba(0,0,0,.55);
+    0 0 0 1px rgba(0, 255, 255, 0.08) inset,
+    0 0 26px rgba(0, 255, 255, 0.12),
+    0 18px 60px rgba(0, 0, 0, 0.55);
 }
 
-.friends-inner{
+.friends-inner {
   padding: 14px 14px 16px;
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
 }
 
-.friend{
+.friend {
   height: 44px;
   border-radius: 8px;
   padding: 0 10px;
 
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
   gap: 10px;
 
-  background: linear-gradient(90deg, rgba(120, 0, 255, .22), rgba(255, 0, 140, .14));
-  border: 1px solid rgba(255,255,255,.06);
+  background: linear-gradient(
+    90deg,
+    rgba(120, 0, 255, 0.22),
+    rgba(255, 0, 140, 0.14)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.06);
 
   box-shadow:
-    0 0 0 1px rgba(0,255,255,.06) inset,
-    0 10px 24px rgba(0,0,0,.35);
+    0 0 0 1px rgba(0, 255, 255, 0.06) inset,
+    0 10px 24px rgba(0, 0, 0, 0.35);
 }
 
-.avatar{
+.avatar {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  display:grid;
-  place-items:center;
+  display: grid;
+  place-items: center;
 
-  background: rgba(0,0,0,.25);
-  border: 1px solid rgba(140, 220, 255, .25);
-  box-shadow: 0 0 14px rgba(0,255,255,.10);
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(140, 220, 255, 0.25);
+  box-shadow: 0 0 14px rgba(0, 255, 255, 0.1);
 }
 
-.avatar-icn{
+.avatar-icn {
   width: 18px;
   height: 18px;
-  fill: rgba(205, 235, 255, .75);
+  fill: rgba(205, 235, 255, 0.75);
 }
 
-.name{
+.name {
   flex: 1;
   font-size: 13px;
-  color: rgba(220,245,255,.85);
+  color: rgba(220, 245, 255, 0.85);
 }
 
-.pill{
+.pill {
   height: 22px;
   min-width: 70px;
   padding: 0 10px;
@@ -117,77 +143,79 @@ body{
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
-  color: rgba(240,255,255,.95);
+  color: rgba(240, 255, 255, 0.95);
 
   cursor: pointer;
   box-shadow:
-    0 0 0 1px rgba(255,255,255,.10) inset,
-    0 10px 20px rgba(0,0,0,.35);
-  transition: transform 120ms ease, filter 120ms ease;
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 10px 20px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 120ms ease,
+    filter 120ms ease;
 }
 
-.pill:hover{ filter: brightness(1.05); transform: translateY(-1px); }
-.pill:active{ transform: translateY(0px); filter: brightness(.98); }
-
-
+.pill:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+.pill:active {
+  transform: translateY(0px);
+  filter: brightness(0.98);
+}
 
 /* ====== Aqui puedes mover el color de los botones ====== */
-.pill--agregar{
+.pill--agregar {
   background: linear-gradient(90deg, #6a4cff 0%, #b24dff 100%);
 }
 
-.pill--amigo{
+.pill--amigo {
   background: linear-gradient(90deg, #2dff7a 0%, #00c2ff 100%);
 }
 
-.pill--aceptar{
+.pill--aceptar {
   background: linear-gradient(90deg, #44ff62 0%, #c8ff3a 100%);
-  color: rgba(15, 35, 20, .95);
+  color: rgba(15, 35, 20, 0.95);
   box-shadow:
-    0 0 0 1px rgba(255,255,255,.14) inset,
-    0 10px 20px rgba(0,0,0,.35);
+    0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+    0 10px 20px rgba(0, 0, 0, 0.35);
 }
 
-
-
 /* ====== VERSION LAPTOP ====== */
-@media (min-width: 1024px){
-
-  .friends-card{
+@media (min-width: 1024px) {
+  .friends-card {
     width: 460px;
     border-radius: 14px;
   }
 
-  .friends-inner{
+  .friends-inner {
     padding: 20px;
     gap: 16px;
   }
 
-  .friend{
-    height: 56px;      
+  .friend {
+    height: 56px;
     padding: 0 14px;
     border-radius: 10px;
   }
 
-  .avatar{
+  .avatar {
     width: 36px;
     height: 36px;
   }
 
-  .avatar-icn{
+  .avatar-icn {
     width: 22px;
     height: 22px;
   }
 
-  .name{
+  .name {
     font-size: 15px;
   }
 
-  .pill{
+  .pill {
     height: 28px;
     min-width: 90px;
     font-size: 13px;
     padding: 0 14px;
   }
-
 }
