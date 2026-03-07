@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 html,
 body {
   height: 100%;
@@ -70,12 +71,10 @@ body {
   width: 320px;
   border-radius: 10px;
   position: relative;
-
   border: 2px solid rgba(0, 210, 255, 0.85);
   background: rgba(10, 16, 28, 0.35);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-
   box-shadow:
     0 0 0 1px rgba(0, 255, 255, 0.08) inset,
     0 0 26px rgba(0, 255, 255, 0.12),
@@ -90,24 +89,34 @@ body {
 }
 
 .friend {
-  height: 44px;
+  min-height: 44px;
   border-radius: 8px;
   padding: 0 10px;
-
   display: flex;
   align-items: center;
   gap: 10px;
-
   background: linear-gradient(
     90deg,
     rgba(120, 0, 255, 0.22),
     rgba(255, 0, 140, 0.14)
   );
   border: 1px solid rgba(255, 255, 255, 0.06);
-
   box-shadow:
     0 0 0 1px rgba(0, 255, 255, 0.06) inset,
     0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.friend--amigo {
+  padding: 10px;
+  align-items: stretch;
+  flex-direction: column;
+}
+
+.friend-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
 }
 
 .avatar {
@@ -116,7 +125,6 @@ body {
   border-radius: 50%;
   display: grid;
   place-items: center;
-
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(140, 220, 255, 0.25);
   box-shadow: 0 0 14px rgba(0, 255, 255, 0.1);
@@ -130,7 +138,7 @@ body {
 
 .name {
   flex: 1;
-  font-size: 13px;
+  font-size: 15px;
   color: rgba(220, 245, 255, 0.85);
 }
 
@@ -138,13 +146,11 @@ body {
   height: 22px;
   min-width: 70px;
   padding: 0 10px;
-
   border: 0;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
   color: rgba(240, 255, 255, 0.95);
-
   cursor: pointer;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.1) inset,
@@ -158,12 +164,12 @@ body {
   filter: brightness(1.05);
   transform: translateY(-1px);
 }
+
 .pill:active {
   transform: translateY(0px);
   filter: brightness(0.98);
 }
 
-/* ====== Aqui puedes mover el color de los botones ====== */
 .pill--agregar {
   background: linear-gradient(90deg, #6a4cff 0%, #b24dff 100%);
 }
@@ -180,7 +186,158 @@ body {
     0 10px 20px rgba(0, 0, 0, 0.35);
 }
 
-/* ====== VERSION LAPTOP ====== */
+.friend-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 140px;
+  display: none;
+  flex-direction: column;
+  background: linear-gradient(
+    180deg,
+    rgba(52, 194, 131, 0.96) 0%,
+    rgba(36, 131, 167, 0.96) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.07) inset,
+    0 12px 28px rgba(0, 0, 0, 0.35);
+  z-index: 30;
+}
+
+.dropdown-menu.show {
+  display: flex;
+}
+
+.dropdown-item {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.96);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.edit-btn {
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.96);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow:
+    0 0 0 1px rgba(0, 255, 255, 0.05) inset,
+    0 8px 16px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 120ms ease,
+    filter 120ms ease,
+    background 120ms ease;
+}
+
+.edit-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.edit-panel {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: rgba(6, 12, 24, 0.72);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 10px 24px rgba(0, 0, 0, 0.32);
+}
+
+.edit-panel.show {
+  display: flex;
+}
+
+.edit-input {
+  width: 60%;
+  min-width: 160px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(240, 255, 255, 0.95);
+  outline: none;
+}
+
+.edit-input::placeholder {
+  color: rgba(220, 240, 255, 0.45);
+}
+
+.edit-input:focus {
+  border-color: rgba(0, 255, 255, 0.55);
+  box-shadow: 0 0 14px rgba(0, 255, 255, 0.1);
+}
+
+.edit-panel-actions {
+  width: 60%;
+  min-width: 160px;
+  display: flex;
+  gap: 10px;
+}
+
+.panel-btn {
+  flex: 1;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    filter 120ms ease;
+}
+
+.panel-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.panel-btn--close {
+  background: linear-gradient(90deg, #5a4cff 0%, #8f54ff 100%);
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.panel-btn--send {
+  background: linear-gradient(90deg, #29e36f 0%, #00c2ff 100%);
+  color: rgba(255, 255, 255, 0.96);
+}
+
 @media (min-width: 1024px) {
   .friends-card {
     width: 460px;
@@ -193,9 +350,17 @@ body {
   }
 
   .friend {
-    height: 56px;
+    min-height: 56px;
     padding: 0 14px;
     border-radius: 10px;
+  }
+
+  .friend--amigo {
+    padding: 14px;
+  }
+
+  .friend-main {
+    min-height: 56px;
   }
 
   .avatar {
@@ -218,4 +383,31 @@ body {
     font-size: 13px;
     padding: 0 14px;
   }
+
+  .edit-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .dropdown-menu {
+    min-width: 160px;
+  }
+
+  .dropdown-item {
+    font-size: 13px;
+  }
+
+  .edit-panel {
+    padding: 16px;
+  }
+
+  .edit-input {
+    height: 40px;
+  }
+
+  .panel-btn {
+    height: 38px;
+    font-size: 13px;
+  }
 }
+
