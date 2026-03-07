@@ -18,15 +18,47 @@
     <main class="page">
       <section class="friends-card" aria-label="Friends list">
         <div class="friends-inner">
-          <!-- AQUI VAN LOS COMPONENTES  -->
-          <div class="friend">
-            <div class="avatar" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="avatar-icn">
-                <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.4-8 5.4V21h16v-1.6c0-3-3.6-5.4-8-5.4Z"/>
-              </svg>
+          
+          <div class="friend friend--amigo">
+            <div class="friend-main">
+              <div class="avatar" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="avatar-icn">
+                  <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.4-8 5.4V21h16v-1.6c0-3-3.6-5.4-8-5.4Z"/>
+                </svg>
+              </div>
+              <div class="name">Diego Chino</div>
+
+              <div class="friend-actions">
+                <button class="edit-btn" type="button" aria-label="Editar nota">✏️</button>
+
+                <div class="dropdown">
+                  <button class="pill pill--amigo dropdown-btn" type="button">
+                    Amigo
+                  </button>
+
+                  <div class="dropdown-menu">
+                    <button class="dropdown-item" type="button">Conocido</button>
+                    <button class="dropdown-item" type="button">Mejor Amigo</button>
+                    <button class="dropdown-item" type="button">Me cae mal</button>
+                    <button class="dropdown-item" type="button">Pareja</button>
+                    <button class="dropdown-item" type="button">Amigo</button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="name">Diego Chino</div>
-            <button class="pill pill--amigo" type="button">Amigo</button>
+
+            <div class="edit-panel">
+              <input
+                class="edit-input"
+                type="text"
+                placeholder="Escribe una nota..."
+              />
+
+              <div class="edit-panel-actions">
+                <button class="panel-btn panel-btn--close" type="button">Cerrar</button>
+                <button class="panel-btn panel-btn--send" type="button">Enviar</button>
+              </div>
+            </div>
           </div>
 
           <div class="friend">
@@ -59,33 +91,53 @@
             <button class="pill pill--agregar" type="button">Agregar</button>
           </div>
 
-          <div class="friend">
-            <div class="avatar" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="avatar-icn">
-                <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.4-8 5.4V21h16v-1.6c0-3-3.6-5.4-8-5.4Z"/>
-              </svg>
-            </div>
-            <div class="name">Robert</div>
-            <button class="pill pill--amigo" type="button">Amigo</button>
-          </div>
+          <div class="friend friend--amigo">
+            <div class="friend-main">
+              <div class="avatar" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="avatar-icn">
+                  <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.4-8 5.4V21h16v-1.6c0-3-3.6-5.4-8-5.4Z"/>
+                </svg>
+              </div>
+              <div class="name">Robert</div>
 
-          
-          <!-- 
-            EN CASO DE AGREGAR UN NUEVO COMPONENTE COLOCALO ARRIBA DE ESTE TEXTO
-            LO QUE CAMBIA ES LA CLASE DEL BOTON
-            <div class="friend">
-            <div class="avatar" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="avatar-icn">
-                <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.4-8 5.4V21h16v-1.6c0-3-3.6-5.4-8-5.4Z"/>
-              </svg>
+              <div class="friend-actions">
+                <button class="edit-btn" type="button" aria-label="Editar nota">✏️</button>
+
+                <div class="dropdown">
+                  <button class="pill pill--amigo dropdown-btn" type="button">
+                    Amigo
+                  </button>
+
+                  <div class="dropdown-menu">
+                    <button class="dropdown-item" type="button">Conocido</button>
+                    <button class="dropdown-item" type="button">Mejor Amigo</button>
+                    <button class="dropdown-item" type="button">Me cae mal</button>
+                    <button class="dropdown-item" type="button">Pareja</button>
+                    <button class="dropdown-item" type="button">Amigo</button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="name">PON AQUI EL NUEVO NOMBRE</div>
-            <button class="pill pill--amigo" type="button">Amigo</button>
+
+            <div class="edit-panel">
+              <input
+                class="edit-input"
+                type="text"
+                placeholder="Escribe una nota..."
+              />
+
+              <div class="edit-panel-actions">
+                <button class="panel-btn panel-btn--close" type="button">Cerrar</button>
+                <button class="panel-btn panel-btn--send" type="button">Enviar</button>
+              </div>
+            </div>
           </div>
-          
-          -->
-        </div> 
+        </div>
       </section>
     </main>
+
+    <script src="../js/index.js">
+      
+    </script>
   </body>
 </html>
