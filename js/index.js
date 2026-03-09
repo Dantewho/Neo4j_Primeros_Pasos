@@ -380,7 +380,7 @@ function connectWebSocket() {
       if (data.error) {
         alert("Ese usuario ya está en uso.");
         localStorage.removeItem("mini_social_username");
-        window.location.href = "../Index.html";
+        window.location.href = "../index.html";
         return;
       }
 
@@ -412,4 +412,5 @@ document.addEventListener("click", (event) => {
 });
 
 connectWebSocket();
+
 
