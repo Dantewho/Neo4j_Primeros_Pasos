@@ -16,7 +16,7 @@ const ACTIVE_RELATION_STATES = [
 ];
 
 if (!username) {
-  window.location.href = "../Index.html";
+  window.location.href = "../index.html";
 }
 
 if (welcomeText) {
@@ -412,3 +412,4 @@ document.addEventListener("click", (event) => {
 });
 
 connectWebSocket();
+
