@@ -402,9 +402,6 @@ body {
     border-radius: 10px;
   }
 
-  .friend--amigo {
-    padding: 14px;
-  }
 
   .friend-main {
     min-height: 56px;
@@ -457,3 +454,4 @@ body {
     font-size: 13px;
   }
 }
+
