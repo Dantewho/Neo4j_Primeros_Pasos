@@ -86,8 +86,27 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  overflow-y: auto;  
+  overflow-y: auto;
   max-height: 500px;
+  padding-right: 8px;
+}
+
+.friends-inner::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.friends-inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.friends-inner::-webkit-scrollbar-thumb {
+  background: rgba(0, 200, 255, 0.4);
+  border-radius: 6px;
+}
+
+.friends-inner::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 200, 255, 0.7);
 }
 
 .friend {
@@ -96,6 +115,7 @@ body {
   padding: 0 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   background: linear-gradient(
     90deg,
@@ -117,8 +137,10 @@ body {
 .friend-main {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   min-height: 44px;
+  width: 100%;
 }
 
 .avatar {
@@ -130,6 +152,7 @@ body {
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(140, 220, 255, 0.25);
   box-shadow: 0 0 14px rgba(0, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .avatar-icn {
@@ -140,8 +163,11 @@ body {
 
 .name {
   flex: 1;
+  min-width: 0;
   font-size: 15px;
   color: rgba(220, 245, 255, 0.85);
+  display: flex;
+  align-items: center;
 }
 
 .pill {
@@ -160,6 +186,7 @@ body {
   transition:
     transform 120ms ease,
     filter 120ms ease;
+  white-space: nowrap;
 }
 
 .pill:hover {
@@ -188,11 +215,21 @@ body {
     0 10px 20px rgba(0, 0, 0, 0.35);
 }
 
+.pill--pending {
+  background: linear-gradient(90deg, #f7d54a 0%, #ff9f43 100%);
+  color: #000000;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+    0 10px 20px rgba(0, 0, 0, 0.35);
+}
+
 .friend-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: flex-end;
+  gap: 8px;
   position: relative;
+  flex-shrink: 0;
 }
 
 .dropdown {
@@ -256,6 +293,7 @@ body {
     transform 120ms ease,
     filter 120ms ease,
     background 120ms ease;
+  flex-shrink: 0;
 }
 
 .edit-btn:hover {
@@ -340,6 +378,13 @@ body {
   color: rgba(255, 255, 255, 0.96);
 }
 
+.empty-state {
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  padding: 40px 20px;
+}
+
 @media (min-width: 1024px) {
   .friends-card {
     width: 460px;
@@ -412,5 +457,3 @@ body {
     font-size: 13px;
   }
 }
-
-
