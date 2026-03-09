@@ -1,26 +1,17 @@
-function permitirSoloLetrasYNumeros(inputElement) {
-  if (!inputElement) return;
+function permitirSoloLetrasYNumeros(input) {
+  const MAX_LENGTH = 20;
 
-  inputElement.addEventListener("input", () => {
-    inputElement.value = inputElement.value.replace(/[^a-zA-Z0-9]/g, "");
-  });
+  input.addEventListener("input", () => {
 
-  inputElement.addEventListener("paste", (event) => {
-    event.preventDefault();
+    // eliminar caracteres especiales
+    let valor = input.value.replace(/[^a-zA-Z0-9]/g, "");
 
-    const texto = (event.clipboardData || window.clipboardData).getData("text");
-    const textoLimpio = texto.replace(/[^a-zA-Z0-9]/g, "");
+    // limitar longitud
+    if (valor.length > MAX_LENGTH) {
+      valor = valor.substring(0, MAX_LENGTH);
+    }
 
-    const start = inputElement.selectionStart;
-    const end = inputElement.selectionEnd;
-    const valorActual = inputElement.value;
+    input.value = valor;
 
-    inputElement.value =
-      valorActual.substring(0, start) +
-      textoLimpio +
-      valorActual.substring(end);
-
-    const nuevaPosicion = start + textoLimpio.length;
-    inputElement.setSelectionRange(nuevaPosicion, nuevaPosicion);
   });
 }
