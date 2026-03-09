@@ -25,7 +25,7 @@ function login() {
     ws.close();
 
     // redirigimos
-    window.location.href = "Views/Index.html";
+    window.location.href = "Views/index.html";
   };
 
   ws.onmessage = (event) => {
@@ -59,4 +59,5 @@ usernameInput.addEventListener("keydown", (e)=>{
   if(e.key === "Enter"){
     login();
   }
+
 });
