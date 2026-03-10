@@ -1,5 +1,5 @@
 import { permitirSoloLetrasYNumeros } from "../../utils/validaciones";
-import { WS_BASE } from "../../data";
+import { WS_BASE } from "../../lib/env";
 
 // eslint-disable-next-line no-unused-vars
 export function initializeLogin(onSuccess: (username: string) => void) {
