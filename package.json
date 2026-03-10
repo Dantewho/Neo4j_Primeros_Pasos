@@ -1,0 +1,19 @@
+{
+    "devDependencies": {
+        "@types/bun": "latest",
+        "@eslint/js": "10.0.1",
+        "eslint": "10.0.2",
+        "typescript": "5.9.3",
+        "typescript-eslint": "8.56.1"
+    },
+    "name": "neo4j-primeros-pasos",
+    "private": true,
+    "scripts": {
+        "build": "bun lint && bun tsc && bun vite build",
+        "dev": "vite",
+        "preview": "vite preview",
+        "lint": "eslint ."
+    },
+    "type": "module",
+    "version": "0.0.0"
+}
