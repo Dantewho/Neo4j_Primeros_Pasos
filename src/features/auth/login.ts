@@ -1,63 +1,62 @@
 import { permitirSoloLetrasYNumeros } from "../../utils/validaciones";
+import { WS_BASE } from "../../data";
 
+// eslint-disable-next-line no-unused-vars
 export function initializeLogin(onSuccess: (username: string) => void) {
-  const loginView = document.getElementById("login-view");
-  if (!loginView) return;
+    const loginView = document.getElementById("login-view");
+    if (!loginView) return;
 
-  const usernameInput = document.getElementById("username") as HTMLInputElement;
-  const loginBtn = document.getElementById("loginBtn") as HTMLButtonElement;
-  const mensaje = document.getElementById("mensaje") as HTMLDivElement;
+    const usernameInput = document.getElementById("username") as HTMLInputElement;
+    const loginBtn = document.getElementById("loginBtn") as HTMLButtonElement;
+    const mensaje = document.getElementById("mensaje") as HTMLDivElement;
 
-  if (!usernameInput || !loginBtn) return;
+    if (!usernameInput || !loginBtn) return;
 
-  permitirSoloLetrasYNumeros(usernameInput);
+    permitirSoloLetrasYNumeros(usernameInput);
 
-  function mostrarMensaje(texto: string) {
-    if (mensaje) {
-      mensaje.innerText = texto;
-    } else {
-      alert(texto);
-    }
-  }
-
-  function login() {
-    const username = usernameInput.value.trim();
-
-    if (!username) {
-      mostrarMensaje("Ingresa un usuario");
-      return;
+    function mostrarMensaje(texto: string) {
+        if (mensaje) {
+            mensaje.innerText = texto;
+        } else {
+            alert(texto);
+        }
     }
 
-    const ws = new WebSocket(`wss://api.fudge-bit.me/ws/${username}`);
+    function login() {
+        const username = usernameInput.value.trim();
 
-    ws.onopen = () => {
-      console.log("WebSocket abierto");
-      // guardamos usuario
-      localStorage.setItem("mini_social_username", username);
-      // cerramos conexión temporal
-      ws.close();
-      // llamamos al callback de exito
-      onSuccess(username);
-    };
+        if (!username) {
+            mostrarMensaje("Ingresa un usuario");
+            return;
+        }
 
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.error) {
-        mostrarMensaje("Ese usuario ya está en uso");
-        ws.close();
-      }
-    };
+        const ws = new WebSocket(`${WS_BASE}/ws/${username}`);
 
-    ws.onerror = () => {
-      mostrarMensaje("Error conectando con el servidor");
-    };
-  }
+        ws.onopen = () => {
+            console.log("WebSocket abierto");
+            localStorage.setItem("mini_social_username", username);
+            ws.close();
+            onSuccess(username);
+        };
 
-  loginBtn.addEventListener("click", login);
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.error) {
+                mostrarMensaje("Ese usuario ya está en uso");
+                ws.close();
+            }
+        };
 
-  usernameInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      login();
+        ws.onerror = () => {
+            mostrarMensaje("Error conectando con el servidor");
+        };
     }
-  });
+
+    loginBtn.addEventListener("click", login);
+
+    usernameInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            login();
+        }
+    });
 }

@@ -1,35 +1,33 @@
-const API_BASE = "https://neo4j.mrmikedev.me";
-const WS_BASE = "wss://neo4j.mrmikedev.me/ws";
+import { API_BASE, WS_BASE } from "../../data";
+
+const API_URL = `${API_BASE}`;
+const WS_URL = `${WS_BASE}/ws`;
 
 let ws: WebSocket | null = null;
 let currentUsername: string | null = null;
 
-const ACTIVE_RELATION_STATES = [
-  "Conocido",
-  "Amigo",
-  "Mejor Amigo",
-  "Me cae mal"
-];
+const ACTIVE_RELATION_STATES = ["Conocido", "Amigo", "Mejor Amigo", "Me cae mal"];
 
 function escapeHtml(text: string) {
-  return String(text ?? "").replace(/[&<>"']/g, (char) => {
-    const map: Record<string, string> = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;"
-    };
-    return map[char];
-  });
+    return String(text ?? "").replace(/[&<>"']/g, (char) => {
+        const map: Record<string, string> = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "'": "&#039;",
+            // eslint-disable-next-line quotes
+            '"': "&quot;"
+        };
+        return map[char];
+    });
 }
 
 function isActiveRelationship(status: string) {
-  return ACTIVE_RELATION_STATES.includes(status);
+    return ACTIVE_RELATION_STATES.includes(status);
 }
 
 function createAvatar() {
-  return `
+    return `
     <div class="avatar" aria-hidden="true">
       <svg viewBox="0 0 24 24" class="avatar-icn">
         <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.4-8 5.4V21h16v-1.6c0-3-3.6-5.4-8-5.4Z"/>
@@ -39,43 +37,36 @@ function createAvatar() {
 }
 
 function getButtonConfig(status: string) {
-  switch (status) {
-    case "INCOMING_REQUEST":
-      return {
-        text: "Aceptar",
-        className: "pill pill--aceptar",
-        action: "accept"
-      };
+    switch (status) {
+        case "INCOMING_REQUEST":
+            return {
+                text: "Aceptar",
+                className: "pill pill--aceptar",
+                action: "accept"
+            };
 
-    case "OUTGOING_REQUEST":
-      return {
-        text: "Pendiente",
-        className: "pill pill--pending",
-        action: "pending"
-      };
+        case "OUTGOING_REQUEST":
+            return {
+                text: "Pendiente",
+                className: "pill pill--pending",
+                action: "pending"
+            };
 
-    case "UNKNOWN":
-    default:
-      return {
-        text: "Agregar",
-        className: "pill pill--agregar",
-        action: "add"
-      };
-  }
+        case "UNKNOWN":
+        default:
+            return {
+                text: "Agregar",
+                className: "pill pill--agregar",
+                action: "add"
+            };
+    }
 }
 
 function createRelationshipDropdown(currentStatus: string) {
-  const options = ["Conocido", "Amigo", "Mejor Amigo", "Me cae mal"];
+    const options = ["Conocido", "Amigo", "Mejor Amigo", "Me cae mal"];
 
-  return `
-    <div class="dropdown">
-      <button class="pill pill--amigo dropdown-btn" type="button">
-        ${escapeHtml(currentStatus)}
-      </button>
-
-      <div class="dropdown-menu">
-        ${options
-          .map(
+    const op = options
+        .map(
             (option) => `
               <button
                 class="dropdown-item"
@@ -85,23 +76,32 @@ function createRelationshipDropdown(currentStatus: string) {
                 ${escapeHtml(option)}
               </button>
             `
-          )
-          .join("")}
+        )
+        .join("");
+
+    return `
+    <div class="dropdown">
+      <button class="pill pill--amigo dropdown-btn" type="button">
+        ${escapeHtml(currentStatus)}
+      </button>
+
+      <div class="dropdown-menu">
+        ${op}
       </div>
     </div>
   `;
 }
 
 function createFriendCard(user: any) {
-  const otherUser = user.username;
-  const status = user.status;
-  const note = user.note ?? "";
+    const otherUser = user.username;
+    const status = user.status;
+    const note = user.note ?? "";
 
-  const safeName = escapeHtml(otherUser);
-  const safeNote = escapeHtml(note);
+    const safeName = escapeHtml(otherUser);
+    const safeNote = escapeHtml(note);
 
-  if (isActiveRelationship(status)) {
-    return `
+    if (isActiveRelationship(status)) {
+        return `
       <div class="friend friend--amigo" data-username="${safeName}">
         <div class="friend-main">
           ${createAvatar()}
@@ -129,11 +129,11 @@ function createFriendCard(user: any) {
         </div>
       </div>
     `;
-  }
+    }
 
-  const button = getButtonConfig(status);
+    const button = getButtonConfig(status);
 
-  return `
+    return `
     <div class="friend" data-username="${safeName}">
       ${createAvatar()}
       <div class="name">${safeName}</div>
@@ -145,286 +145,286 @@ function createFriendCard(user: any) {
 }
 
 function renderUsers(users: any, friendsList: HTMLElement) {
-  if (!friendsList) return;
+    if (!friendsList) return;
 
-  if (!Array.isArray(users)) {
-    friendsList.innerHTML = `<div>No se recibieron usuarios</div>`;
-    return;
-  }
+    if (!Array.isArray(users)) {
+        friendsList.innerHTML = "<div>No se recibieron usuarios</div>";
+        return;
+    }
 
-  if (users.length === 0) {
-    friendsList.innerHTML = `<div>No hay otros usuarios</div>`;
-    return;
-  }
+    if (users.length === 0) {
+        friendsList.innerHTML = "<div>No hay otros usuarios</div>";
+        return;
+    }
 
-  friendsList.innerHTML = users.map(createFriendCard).join("");
-  bindDynamicEvents();
+    friendsList.innerHTML = users.map(createFriendCard).join("");
+    bindDynamicEvents();
 }
 
 async function sendFriendRequest(targetUsername: string) {
-  try {
-    const response = await fetch(`${API_BASE}/friend-request`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        from_user: currentUsername,
-        to_user: targetUsername
-      })
-    });
+    try {
+        const response = await fetch(`${API_URL}/friend-request`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                from_user: currentUsername,
+                to_user: targetUsername
+            })
+        });
 
-    if (!response.ok) {
-      throw new Error("No se pudo enviar/aceptar la solicitud.");
+        if (!response.ok) {
+            throw new Error("No se pudo enviar/aceptar la solicitud.");
+        }
+    } catch (error) {
+        console.error("Error en /friend-request:", error);
+        alert("Hubo un problema con la solicitud.");
     }
-  } catch (error) {
-    console.error("Error en /friend-request:", error);
-    alert("Hubo un problema con la solicitud.");
-  }
 }
 
 async function updateRelationship(targetUsername: string, relationType: string) {
-  try {
-    const response = await fetch(`${API_BASE}/update-relationship`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        from_user: currentUsername,
-        to_user: targetUsername,
-        relation_type: relationType
-      })
-    });
+    try {
+        const response = await fetch(`${API_URL}/update-relationship`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                from_user: currentUsername,
+                to_user: targetUsername,
+                relation_type: relationType
+            })
+        });
 
-    if (!response.ok) {
-      throw new Error("No se pudo actualizar la relación.");
+        if (!response.ok) {
+            throw new Error("No se pudo actualizar la relación.");
+        }
+    } catch (error) {
+        console.error("Error en /update-relationship:", error);
+        alert("No se pudo actualizar la relación.");
     }
-  } catch (error) {
-    console.error("Error en /update-relationship:", error);
-    alert("No se pudo actualizar la relación.");
-  }
 }
 
 async function updateNote(targetUsername: string, note: string) {
-  try {
-    const response = await fetch(`${API_BASE}/update-note`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        from_user: currentUsername,
-        to_user: targetUsername,
-        note: note
-      })
-    });
+    try {
+        const response = await fetch(`${API_URL}/update-note`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                from_user: currentUsername,
+                to_user: targetUsername,
+                note: note
+            })
+        });
 
-    if (!response.ok) {
-      throw new Error("No se pudo guardar la nota.");
+        if (!response.ok) {
+            throw new Error("No se pudo guardar la nota.");
+        }
+    } catch (error) {
+        console.error("Error en /update-note:", error);
+        alert("No se pudo guardar la nota.");
     }
-  } catch (error) {
-    console.error("Error en /update-note:", error);
-    alert("No se pudo guardar la nota.");
-  }
 }
 
 function closeAllDropdowns() {
-  document.querySelectorAll(".dropdown-menu").forEach((menu) => {
-    menu.classList.remove("show");
-  });
+    document.querySelectorAll(".dropdown-menu").forEach((menu) => {
+        menu.classList.remove("show");
+    });
 }
 
 function closeAllEditPanels() {
-  document.querySelectorAll(".edit-panel").forEach((panel) => {
-    panel.classList.remove("show");
-  });
+    document.querySelectorAll(".edit-panel").forEach((panel) => {
+        panel.classList.remove("show");
+    });
 }
 
 function bindDynamicEvents() {
-  document.querySelectorAll("[data-action='add']").forEach((button) => {
-    button.addEventListener("click", async () => {
-      const card = button.closest(".friend") as HTMLElement;
-      if (!card) return;
+    document.querySelectorAll("[data-action='add']").forEach((button) => {
+        button.addEventListener("click", async () => {
+            const card = button.closest(".friend") as HTMLElement;
+            if (!card) return;
 
-      const target = card.dataset.username;
-      if (target) await sendFriendRequest(target);
+            const target = card.dataset.username;
+            if (target) await sendFriendRequest(target);
+        });
     });
-  });
 
-  document.querySelectorAll("[data-action='accept']").forEach((button) => {
-    button.addEventListener("click", async () => {
-      const card = button.closest(".friend") as HTMLElement;
-      if (!card) return;
+    document.querySelectorAll("[data-action='accept']").forEach((button) => {
+        button.addEventListener("click", async () => {
+            const card = button.closest(".friend") as HTMLElement;
+            if (!card) return;
 
-      const target = card.dataset.username;
-      if (target) await sendFriendRequest(target);
+            const target = card.dataset.username;
+            if (target) await sendFriendRequest(target);
+        });
     });
-  });
 
-  document.querySelectorAll("[data-action='pending']").forEach((button) => {
-    button.addEventListener("click", () => {
-      alert("Ya enviaste una solicitud a este usuario.");
+    document.querySelectorAll("[data-action='pending']").forEach((button) => {
+        button.addEventListener("click", () => {
+            alert("Ya enviaste una solicitud a este usuario.");
+        });
     });
-  });
 
-  document.querySelectorAll(".friend--amigo").forEach((card) => {
-    const target = (card as HTMLElement).dataset.username!;
+    document.querySelectorAll(".friend--amigo").forEach((card) => {
+        const target = (card as HTMLElement).dataset.username!;
 
-    const editBtn = card.querySelector(".edit-btn");
-    const editPanel = card.querySelector(".edit-panel");
-    const closeBtn = card.querySelector(".panel-btn--close");
-    const clearBtn = card.querySelector(".panel-btn--clear");
-    const saveBtn = card.querySelector(".panel-btn--send");
-    const input = card.querySelector(".edit-input") as HTMLInputElement;
+        const editBtn = card.querySelector(".edit-btn");
+        const editPanel = card.querySelector(".edit-panel");
+        const closeBtn = card.querySelector(".panel-btn--close");
+        const clearBtn = card.querySelector(".panel-btn--clear");
+        const saveBtn = card.querySelector(".panel-btn--send");
+        const input = card.querySelector(".edit-input") as HTMLInputElement;
 
-    const dropdownBtn = card.querySelector(".dropdown-btn");
-    const dropdownMenu = card.querySelector(".dropdown-menu");
-    const dropdownItems = card.querySelectorAll(".dropdown-item");
+        const dropdownBtn = card.querySelector(".dropdown-btn");
+        const dropdownMenu = card.querySelector(".dropdown-menu");
+        const dropdownItems = card.querySelectorAll(".dropdown-item");
 
-    if (editBtn && editPanel) {
-      editBtn.addEventListener("click", (event) => {
-        event.stopPropagation();
+        if (editBtn && editPanel) {
+            editBtn.addEventListener("click", (event) => {
+                event.stopPropagation();
 
-        const isOpen = editPanel.classList.contains("show");
-        closeAllEditPanels();
+                const isOpen = editPanel.classList.contains("show");
+                closeAllEditPanels();
 
-        if (!isOpen) {
-          editPanel.classList.add("show");
-          if (input) {
-            input.focus();
-            input.setSelectionRange(input.value.length, input.value.length);
-          }
+                if (!isOpen) {
+                    editPanel.classList.add("show");
+                    if (input) {
+                        input.focus();
+                        input.setSelectionRange(input.value.length, input.value.length);
+                    }
+                }
+            });
         }
-      });
-    }
 
-    if (closeBtn && editPanel) {
-      closeBtn.addEventListener("click", () => {
-        editPanel.classList.remove("show");
-      });
-    }
-
-    if (clearBtn && input && editPanel) {
-      clearBtn.addEventListener("click", async () => {
-        input.value = "";
-        await updateNote(target, "");
-        editPanel.classList.remove("show");
-      });
-    }
-
-    if (saveBtn && input && editPanel) {
-      saveBtn.addEventListener("click", async () => {
-        await updateNote(target, input.value.trim());
-        editPanel.classList.remove("show");
-      });
-    }
-
-    if (input) {
-      input.addEventListener("keydown", async (event) => {
-        if (event.key === "Enter") {
-          await updateNote(target, input.value.trim());
-          if (editPanel) {
-            editPanel.classList.remove("show");
-          }
+        if (closeBtn && editPanel) {
+            closeBtn.addEventListener("click", () => {
+                editPanel.classList.remove("show");
+            });
         }
-      });
-    }
 
-    if (dropdownBtn && dropdownMenu) {
-      dropdownBtn.addEventListener("click", (event) => {
-        event.stopPropagation();
-
-        const isOpen = dropdownMenu.classList.contains("show");
-        closeAllDropdowns();
-
-        if (!isOpen) {
-          dropdownMenu.classList.add("show");
+        if (clearBtn && input && editPanel) {
+            clearBtn.addEventListener("click", async () => {
+                input.value = "";
+                await updateNote(target, "");
+                editPanel.classList.remove("show");
+            });
         }
-      });
-    }
 
-    dropdownItems.forEach((item) => {
-      item.addEventListener("click", async () => {
-        const relation = (item as HTMLElement).dataset.relation;
-        if (relation) {
-          await updateRelationship(target, relation);
-          if (dropdownBtn) dropdownBtn.textContent = relation;
-          if (dropdownMenu) dropdownMenu.classList.remove("show");
+        if (saveBtn && input && editPanel) {
+            saveBtn.addEventListener("click", async () => {
+                await updateNote(target, input.value.trim());
+                editPanel.classList.remove("show");
+            });
         }
-      });
+
+        if (input) {
+            input.addEventListener("keydown", async (event) => {
+                if (event.key === "Enter") {
+                    await updateNote(target, input.value.trim());
+                    if (editPanel) {
+                        editPanel.classList.remove("show");
+                    }
+                }
+            });
+        }
+
+        if (dropdownBtn && dropdownMenu) {
+            dropdownBtn.addEventListener("click", (event) => {
+                event.stopPropagation();
+
+                const isOpen = dropdownMenu.classList.contains("show");
+                closeAllDropdowns();
+
+                if (!isOpen) {
+                    dropdownMenu.classList.add("show");
+                }
+            });
+        }
+
+        dropdownItems.forEach((item) => {
+            item.addEventListener("click", async () => {
+                const relation = (item as HTMLElement).dataset.relation;
+                if (relation) {
+                    await updateRelationship(target, relation);
+                    if (dropdownBtn) dropdownBtn.textContent = relation;
+                    if (dropdownMenu) dropdownMenu.classList.remove("show");
+                }
+            });
+        });
     });
-  });
 }
 
 function connectWebSocket(username: string, friendsList: HTMLElement, onAuthError: () => void) {
-  ws = new WebSocket(`${WS_BASE}/${encodeURIComponent(username)}`);
+    ws = new WebSocket(`${WS_URL}/${encodeURIComponent(username)}`);
 
-  ws.onopen = () => {
-    console.log("WebSocket conectado como:", username);
-  };
+    ws.onopen = () => {
+        console.log("WebSocket conectado como:", username);
+    };
 
-  ws.onmessage = (event) => {
-    try {
-      const data = JSON.parse(event.data);
+    ws.onmessage = (event) => {
+        try {
+            const data = JSON.parse(event.data);
 
-      if (data.error) {
-        alert("Ese usuario ya está en uso.");
-        onAuthError();
-        return;
-      }
+            if (data.error) {
+                alert("Ese usuario ya está en uso.");
+                onAuthError();
+                return;
+            }
 
-      if (data.type === "user_list_update") {
-        renderUsers(data.users, friendsList);
-      }
-    } catch (error) {
-      console.error("Error al leer mensaje WS:", error);
-    }
-  };
+            if (data.type === "user_list_update") {
+                renderUsers(data.users, friendsList);
+            }
+        } catch (error) {
+            console.error("Error al leer mensaje WS:", error);
+        }
+    };
 
-  ws.onerror = (error) => {
-    console.error("Error WebSocket:", error);
-  };
+    ws.onerror = (error) => {
+        console.error("Error WebSocket:", error);
+    };
 
-  ws.onclose = (event) => {
-    console.warn("WebSocket cerrado:", event);
-  };
+    ws.onclose = (event) => {
+        console.warn("WebSocket cerrado:", event);
+    };
 }
 
 export function initializeFriends(username: string, onAuthError: () => void) {
-  currentUsername = username;
-  
-  const welcomeText = document.getElementById("welcomeText");
-  const friendsList = document.getElementById("friendsList");
+    currentUsername = username;
 
-  if (welcomeText) {
-    welcomeText.textContent = `Bienvenido, ${username}!`;
-  }
-  
-  document.addEventListener("click", (event) => {
-    if (!(event.target as HTMLElement).closest(".dropdown")) {
-      closeAllDropdowns();
+    const welcomeText = document.getElementById("welcomeText");
+    const friendsList = document.getElementById("friendsList");
+
+    if (welcomeText) {
+        welcomeText.textContent = `Bienvenido, ${username}!`;
     }
 
-    if (!(event.target as HTMLElement).closest(".friend--amigo")) {
-      closeAllEditPanels();
-    }
-  });
+    document.addEventListener("click", (event) => {
+        if (!(event.target as HTMLElement).closest(".dropdown")) {
+            closeAllDropdowns();
+        }
 
-  if (friendsList) {
-    friendsList.innerHTML = `
+        if (!(event.target as HTMLElement).closest(".friend--amigo")) {
+            closeAllEditPanels();
+        }
+    });
+
+    if (friendsList) {
+        friendsList.innerHTML = `
       <div class="loader-container">
         <div class="spinner"></div>
         <div>Cargando usuarios...</div>
       </div>
     `;
-    connectWebSocket(username, friendsList, onAuthError);
-  }
+        connectWebSocket(username, friendsList, onAuthError);
+    }
 }
 
 export function cleanupFriends() {
-  if (ws) {
-    ws.close();
-    ws = null;
-  }
+    if (ws) {
+        ws.close();
+        ws = null;
+    }
 }
