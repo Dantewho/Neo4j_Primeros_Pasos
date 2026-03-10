@@ -1,4 +1,4 @@
-import { API_BASE, WS_BASE } from "../../data";
+import { API_BASE, WS_BASE } from "../../lib/env";
 
 const API_URL = `${API_BASE}`;
 const WS_URL = `${WS_BASE}/ws`;
