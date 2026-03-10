@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/neo4j.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-    <link rel="stylesheet" href="css/login.css" />
+    <title>Primeros Pasos con Neo4j</title>
   </head>
-
   <body>
-    <main class="page">
+    <!-- Login View -->
+    <main id="login-view" class="page">
       <section class="login-card" aria-label="Login">
         <div class="card-inner">
           <label class="field-label" for="username">Usuario:</label>
@@ -28,10 +28,24 @@
       </section>
     </main>
 
-    <script src="js/validaciones.js"></script>
-    <script src="js/login.js"></script>
+    <!-- Friends View -->
+    <div id="friends-view" style="display: none;">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="welcome" id="welcomeText">Welcome Back, User!</div>
+
+          <button id="logoutBtn" class="btn" type="button">Cerrar Sesion</button>
+        </div>
+        <div class="rainbow-line" aria-hidden="true"></div>
+      </header>
+
+      <main class="page">
+        <section class="friends-card" aria-label="Friends list">
+          <div class="friends-inner" id="friendsList"></div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
   </body>
-
 </html>
-
-
