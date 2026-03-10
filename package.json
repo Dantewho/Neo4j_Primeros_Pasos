@@ -1,11 +1,8 @@
 {
     "devDependencies": {
         "@types/bun": "latest",
-        "@types/cors": "^2.8.19",
-        "@types/express": "5.0.6",
         "@eslint/js": "10.0.1",
         "eslint": "10.0.2",
-        "eslint-plugin-astro": "1.6.0",
         "typescript": "5.9.3",
         "typescript-eslint": "8.56.1"
     },
