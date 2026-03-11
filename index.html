@@ -46,6 +46,27 @@
       </main>
     </div>
 
+    <!-- Edit Note Modal -->
+    <div id="note-modal" class="modal" aria-hidden="true" style="display: none;">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <h2 id="modal-title" class="modal-title">Editar Nota Privada</h2>
+        
+        <input
+          id="note-input"
+          class="modal-input"
+          type="text"
+          placeholder="Escribe una nota privada..."
+        />
+        
+        <div class="modal-actions">
+           <button id="btn-close-modal" class="panel-btn panel-btn--close" type="button">Cancelar</button>
+           <button id="btn-clear-note" class="panel-btn panel-btn--clear" type="button">Borrar</button>
+           <button id="btn-save-note" class="panel-btn panel-btn--send" type="button">Guardar</button>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

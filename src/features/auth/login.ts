@@ -23,6 +23,8 @@ export function initializeLogin(onSuccess: (username: string) => void) {
     }
 
     function login() {
+        if (loginBtn.disabled) return;
+
         const username = usernameInput.value.trim();
 
         if (!username) {
@@ -30,12 +32,17 @@ export function initializeLogin(onSuccess: (username: string) => void) {
             return;
         }
 
+        loginBtn.disabled = true;
+        loginBtn.classList.add("loading");
+
         const ws = new WebSocket(`${WS_BASE}/ws/${username}`);
 
         ws.onopen = () => {
             console.log("WebSocket abierto");
             localStorage.setItem("mini_social_username", username);
             ws.close();
+            loginBtn.disabled = false;
+            loginBtn.classList.remove("loading");
             onSuccess(username);
         };
 
@@ -44,11 +51,15 @@ export function initializeLogin(onSuccess: (username: string) => void) {
             if (data.error) {
                 mostrarMensaje("Ese usuario ya está en uso");
                 ws.close();
+                loginBtn.disabled = false;
+                loginBtn.classList.remove("loading");
             }
         };
 
         ws.onerror = () => {
             mostrarMensaje("Error conectando con el servidor");
+            loginBtn.disabled = false;
+            loginBtn.classList.remove("loading");
         };
     }
 

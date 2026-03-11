@@ -108,23 +108,8 @@ function createFriendCard(user: any) {
           <div class="name">${safeName}</div>
 
           <div class="friend-actions">
-            <button class="edit-btn" type="button" aria-label="Editar nota">✏️</button>
+            <button class="edit-btn" type="button" aria-label="Editar nota" data-note="${safeNote}">✏️</button>
             ${createRelationshipDropdown(status)}
-          </div>
-        </div>
-
-        <div class="edit-panel">
-          <input
-            class="edit-input"
-            type="text"
-            placeholder="Escribe una nota privada..."
-            value="${safeNote}"
-          />
-
-          <div class="edit-panel-actions">
-            <button class="panel-btn panel-btn--close" type="button">Cerrar</button>
-            <button class="panel-btn panel-btn--clear" type="button">Borrar</button>
-            <button class="panel-btn panel-btn--send" type="button">Guardar</button>
           </div>
         </div>
       </div>
@@ -235,12 +220,6 @@ function closeAllDropdowns() {
     });
 }
 
-function closeAllEditPanels() {
-    document.querySelectorAll(".edit-panel").forEach((panel) => {
-        panel.classList.remove("show");
-    });
-}
-
 function bindDynamicEvents() {
     document.querySelectorAll("[data-action='add']").forEach((button) => {
         button.addEventListener("click", async () => {
@@ -270,66 +249,9 @@ function bindDynamicEvents() {
 
     document.querySelectorAll(".friend--amigo").forEach((card) => {
         const target = (card as HTMLElement).dataset.username!;
-
-        const editBtn = card.querySelector(".edit-btn");
-        const editPanel = card.querySelector(".edit-panel");
-        const closeBtn = card.querySelector(".panel-btn--close");
-        const clearBtn = card.querySelector(".panel-btn--clear");
-        const saveBtn = card.querySelector(".panel-btn--send");
-        const input = card.querySelector(".edit-input") as HTMLInputElement;
-
         const dropdownBtn = card.querySelector(".dropdown-btn");
         const dropdownMenu = card.querySelector(".dropdown-menu");
         const dropdownItems = card.querySelectorAll(".dropdown-item");
-
-        if (editBtn && editPanel) {
-            editBtn.addEventListener("click", (event) => {
-                event.stopPropagation();
-
-                const isOpen = editPanel.classList.contains("show");
-                closeAllEditPanels();
-
-                if (!isOpen) {
-                    editPanel.classList.add("show");
-                    if (input) {
-                        input.focus();
-                        input.setSelectionRange(input.value.length, input.value.length);
-                    }
-                }
-            });
-        }
-
-        if (closeBtn && editPanel) {
-            closeBtn.addEventListener("click", () => {
-                editPanel.classList.remove("show");
-            });
-        }
-
-        if (clearBtn && input && editPanel) {
-            clearBtn.addEventListener("click", async () => {
-                input.value = "";
-                await updateNote(target, "");
-                editPanel.classList.remove("show");
-            });
-        }
-
-        if (saveBtn && input && editPanel) {
-            saveBtn.addEventListener("click", async () => {
-                await updateNote(target, input.value.trim());
-                editPanel.classList.remove("show");
-            });
-        }
-
-        if (input) {
-            input.addEventListener("keydown", async (event) => {
-                if (event.key === "Enter") {
-                    await updateNote(target, input.value.trim());
-                    if (editPanel) {
-                        editPanel.classList.remove("show");
-                    }
-                }
-            });
-        }
 
         if (dropdownBtn && dropdownMenu) {
             dropdownBtn.addEventListener("click", (event) => {
@@ -405,10 +327,6 @@ export function initializeFriends(username: string, onAuthError: () => void) {
         if (!(event.target as HTMLElement).closest(".dropdown")) {
             closeAllDropdowns();
         }
-
-        if (!(event.target as HTMLElement).closest(".friend--amigo")) {
-            closeAllEditPanels();
-        }
     });
 
     if (friendsList) {
@@ -421,6 +339,84 @@ export function initializeFriends(username: string, onAuthError: () => void) {
         connectWebSocket(username, friendsList, onAuthError);
     }
 }
+
+let activeModalTarget: string | null = null;
+
+function setupModalListeners() {
+    const modal = document.getElementById("note-modal");
+    const input = document.getElementById("note-input") as HTMLInputElement;
+    const btnClose = document.getElementById("btn-close-modal");
+    const btnClear = document.getElementById("btn-clear-note");
+    const btnSave = document.getElementById("btn-save-note");
+
+    if (!modal || !input || !btnClose || !btnClear || !btnSave) return;
+
+    function closeModal() {
+        modal!.style.display = "none";
+        activeModalTarget = null;
+    }
+
+    async function handleSave(noteValue: string) {
+        if (!activeModalTarget) return;
+        await updateNote(activeModalTarget, noteValue);
+        closeModal();
+    }
+
+    btnClose.addEventListener("click", closeModal);
+
+    btnClear.addEventListener("click", () => {
+        input.value = "";
+        handleSave("");
+    });
+
+    btnSave.addEventListener("click", () => {
+        handleSave(input.value.trim());
+    });
+
+    input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            handleSave(input.value.trim());
+        }
+    });
+
+    modal.addEventListener("click", (event) => {
+        if ((event.target as HTMLElement).classList.contains("modal-backdrop")) {
+            closeModal();
+        }
+    });
+}
+
+document.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    const editBtn = target.closest(".edit-btn") as HTMLElement;
+
+    if (editBtn) {
+        event.stopPropagation();
+        const card = editBtn.closest(".friend") as HTMLElement;
+        if (!card) return;
+
+        const username = card.dataset.username;
+        const currentNote = editBtn.dataset.note || "";
+
+        if (username) {
+            activeModalTarget = username;
+            
+            const modal = document.getElementById("note-modal");
+            const input = document.getElementById("note-input") as HTMLInputElement;
+
+            if (modal && input) {
+                input.value = currentNote;
+                modal.style.display = "grid";
+                
+                input.focus();
+                input.setSelectionRange(input.value.length, input.value.length);
+            }
+        }
+    }
+});
+
+// Inicializamos los eventos del modal una sola vez
+setupModalListeners();
 
 export function cleanupFriends() {
     if (ws) {
